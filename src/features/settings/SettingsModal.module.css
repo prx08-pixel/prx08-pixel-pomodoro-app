@@ -95,6 +95,51 @@
   padding-bottom: 8px;
 }
 
+.toggles {
+  display: grid;
+  gap: 12px;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.switch {
+  width: 48px;
+  height: 28px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.08);
+  padding: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.switchOn {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.knob {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translateX(0);
+  transition: transform 180ms ease;
+}
+
+.switchOn .knob {
+  transform: translateX(20px);
+}
+
 .durations {
   display: grid;
   gap: 8px;

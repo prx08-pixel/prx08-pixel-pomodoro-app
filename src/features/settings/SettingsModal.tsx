@@ -27,7 +27,7 @@ function parseDurationInput(raw: string, key: keyof DurationSettings): number {
 }
 
 export function SettingsModal() {
-  const { state, closeSettings, applySettings, setCustomWallpaper, clearCustomWallpaper } =
+  const { state, closeSettings, applySettings, setLayout, setCustomWallpaper, clearCustomWallpaper } =
     usePomodoro();
   const titleId = useId();
   const [draft, setDraft] = useState<AppSettings>(state.settings);
@@ -189,6 +189,39 @@ export function SettingsModal() {
             </div>
           </section>
 
+          <section className={styles.section}>
+            <h3>Dashboard Customization</h3>
+            <div className={styles.toggles}>
+              <LayoutToggle
+                label="Show Tasks Panel"
+                checked={draft.layout.showTasks}
+                onChange={(showTasks) => {
+                  const layout = { ...draft.layout, showTasks };
+                  setDraft((current) => ({ ...current, layout }));
+                  setLayout(layout);
+                }}
+              />
+              <LayoutToggle
+                label="Show Focus Profile"
+                checked={draft.layout.showProfile}
+                onChange={(showProfile) => {
+                  const layout = { ...draft.layout, showProfile };
+                  setDraft((current) => ({ ...current, layout }));
+                  setLayout(layout);
+                }}
+              />
+              <LayoutToggle
+                label="Show Retro Music Player"
+                checked={draft.layout.showPlayer}
+                onChange={(showPlayer) => {
+                  const layout = { ...draft.layout, showPlayer };
+                  setDraft((current) => ({ ...current, layout }));
+                  setLayout(layout);
+                }}
+              />
+            </div>
+          </section>
+
           <section className={`${styles.section} ${styles.last}`}>
             <h3>Custom wallpaper</h3>
             <CustomWallpaperField
@@ -210,6 +243,31 @@ export function SettingsModal() {
         </div>
       </div>
     </div>
+  );
+}
+
+function LayoutToggle({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+}) {
+  return (
+    <label className={styles.toggleRow}>
+      <span>{label}</span>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        className={`${styles.switch} ${checked ? styles.switchOn : ""}`}
+        onClick={() => onChange(!checked)}
+      >
+        <span className={styles.knob} />
+      </button>
+    </label>
   );
 }
 

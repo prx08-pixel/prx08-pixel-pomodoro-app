@@ -57,6 +57,11 @@ export const DEFAULT_SETTINGS: AppSettings = {
     color: "coral",
     font: "kumbh",
   },
+  layout: {
+    showTasks: true,
+    showProfile: true,
+    showPlayer: true,
+  },
 };
 
 export const MODE_LABEL: Record<TimerMode, string> = {

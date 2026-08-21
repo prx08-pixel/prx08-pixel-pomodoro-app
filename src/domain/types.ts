@@ -21,9 +21,16 @@ export interface AppearanceSettings {
   font: AppFont;
 }
 
+export interface LayoutSettings {
+  showTasks: boolean;
+  showProfile: boolean;
+  showPlayer: boolean;
+}
+
 export interface AppSettings {
   durations: DurationSettings;
   appearance: AppearanceSettings;
+  layout: LayoutSettings;
 }
 
 export interface TimerSnapshot {

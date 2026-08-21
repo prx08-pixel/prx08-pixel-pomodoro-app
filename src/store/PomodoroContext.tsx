@@ -12,7 +12,7 @@ import {
 import { ACCENT_HEX, FONT_FAMILY, minutesToMs } from "@/domain/defaults";
 import { appReducer } from "@/domain/reducer";
 import { resolveWallpaperUrl } from "@/domain/shop";
-import type { AppSettings, AppState, TimerMode } from "@/domain/types";
+import type { AppSettings, AppState, LayoutSettings, TimerMode } from "@/domain/types";
 import { playCompletionChime } from "@/lib/timerAudio";
 import {
   loadPersistedState,
@@ -32,6 +32,7 @@ interface PomodoroContextValue {
   openSettings: () => void;
   closeSettings: () => void;
   applySettings: (settings: AppSettings) => void;
+  setLayout: (layout: LayoutSettings) => void;
   openShop: () => void;
   closeShop: () => void;
   openHistory: () => void;
@@ -136,6 +137,10 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "APPLY_SETTINGS", settings, now: now() });
   }, []);
 
+  const setLayout = useCallback((layout: LayoutSettings) => {
+    dispatch({ type: "SET_LAYOUT", layout });
+  }, []);
+
   const openShop = useCallback(() => {
     dispatch({ type: "OPEN_SHOP" });
   }, []);
@@ -222,6 +227,7 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
       openSettings,
       closeSettings,
       applySettings,
+      setLayout,
       openShop,
       closeShop,
       openHistory,
@@ -251,6 +257,7 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
       openSettings,
       closeSettings,
       applySettings,
+      setLayout,
       openShop,
       closeShop,
       openHistory,

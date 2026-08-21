@@ -18,7 +18,17 @@ export function App() {
   const { state, displayedRemainingMs, openSettings, openShop, openHistory, openSpotify } =
     usePomodoro();
   const isolateClock = state.shopOpen || state.spotifyOpen;
-  const hideSideCards = isolateClock;
+  const { showTasks, showProfile, showPlayer } = state.settings.layout;
+  const showTasksCol = showTasks && !isolateClock;
+  const showStatsCol = (showProfile || showPlayer) && !isolateClock;
+  const layoutMode =
+    isolateClock || (!showTasks && !showProfile && !showPlayer)
+      ? "focus"
+      : showTasksCol && showStatsCol
+        ? "split"
+        : showTasksCol
+          ? "left"
+          : "right";
 
   useEffect(() => {
     document.title = `${formatClock(displayedRemainingMs)} · pomodoro`;
@@ -30,20 +40,24 @@ export function App() {
         <h1>pomodoro</h1>
       </header>
 
-      <div className={styles.dashboard}>
-        <div className={styles.tasks} {...(hideSideCards ? { inert: true, "aria-hidden": true } : {})}>
-          <TaskPanel />
-        </div>
+      <div className={styles.dashboard} data-layout={layoutMode}>
+        {showTasks ? (
+          <div className={styles.tasks} {...(isolateClock ? { inert: true, "aria-hidden": true } : {})}>
+            <TaskPanel />
+          </div>
+        ) : null}
         <div className={styles.timerCol}>
           <ModeSwitcher />
           <CoinBalance />
-          <ActiveTaskBanner />
+          {showTasks ? <ActiveTaskBanner /> : null}
           <TimerCircle />
         </div>
-        <div className={styles.stats} {...(hideSideCards ? { inert: true, "aria-hidden": true } : {})}>
-          <StatsPanel />
-          <MusicPlayer />
-        </div>
+        {showProfile || showPlayer ? (
+          <div className={styles.stats} {...(isolateClock ? { inert: true, "aria-hidden": true } : {})}>
+            {showProfile ? <StatsPanel /> : null}
+            {showPlayer ? <MusicPlayer /> : null}
+          </div>
+        ) : null}
       </div>
 
       <div className={styles.dock}>

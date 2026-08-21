@@ -63,6 +63,11 @@ function parseSettings(value: unknown): AppSettings | null {
   return {
     durations: { pomodoro, shortBreak, longBreak },
     appearance: { color, font },
+    layout: {
+      showTasks: !isObject(value.layout) || value.layout.showTasks !== false,
+      showProfile: !isObject(value.layout) || value.layout.showProfile !== false,
+      showPlayer: !isObject(value.layout) || value.layout.showPlayer !== false,
+    },
   };
 }
 

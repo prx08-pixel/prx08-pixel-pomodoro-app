@@ -24,6 +24,7 @@ export type AppAction =
   | { type: "OPEN_SPOTIFY" }
   | { type: "CLOSE_SPOTIFY" }
   | { type: "APPLY_SETTINGS"; settings: AppSettings; now: number }
+  | { type: "SET_LAYOUT"; layout: AppSettings["layout"] }
   | { type: "UNLOCK_THEME"; itemId: string }
   | { type: "EQUIP_THEME"; itemId: string }
   | { type: "SELECT_THEME"; itemId: string }
@@ -200,6 +201,11 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           shortBreak: clampMinutes(action.settings.durations.shortBreak, "shortBreak"),
           longBreak: clampMinutes(action.settings.durations.longBreak, "longBreak"),
         },
+        layout: {
+          showTasks: action.settings.layout?.showTasks !== false,
+          showProfile: action.settings.layout?.showProfile !== false,
+          showPlayer: action.settings.layout?.showPlayer !== false,
+        },
       };
       const nextDuration = durationFor(settings, state.timer.mode);
       const wasRunning = state.timer.status === "running";
@@ -216,6 +222,19 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         },
       };
     }
+
+    case "SET_LAYOUT":
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          layout: {
+            showTasks: action.layout.showTasks,
+            showProfile: action.layout.showProfile,
+            showPlayer: action.layout.showPlayer,
+          },
+        },
+      };
 
     case "UNLOCK_THEME":
     case "SELECT_THEME":
