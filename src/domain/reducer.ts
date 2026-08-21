@@ -21,6 +21,8 @@ export type AppAction =
   | { type: "CLOSE_SHOP" }
   | { type: "OPEN_HISTORY" }
   | { type: "CLOSE_HISTORY" }
+  | { type: "OPEN_SPOTIFY" }
+  | { type: "CLOSE_SPOTIFY" }
   | { type: "APPLY_SETTINGS"; settings: AppSettings; now: number }
   | { type: "UNLOCK_THEME"; itemId: string }
   | { type: "EQUIP_THEME"; itemId: string }
@@ -105,22 +107,28 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return action.state;
 
     case "OPEN_SETTINGS":
-      return { ...state, settingsOpen: true, shopOpen: false, historyOpen: false };
+      return { ...state, settingsOpen: true, shopOpen: false, historyOpen: false, spotifyOpen: false };
 
     case "CLOSE_SETTINGS":
       return { ...state, settingsOpen: false };
 
     case "OPEN_SHOP":
-      return { ...state, shopOpen: true, settingsOpen: false, historyOpen: false };
+      return { ...state, shopOpen: true, settingsOpen: false, historyOpen: false, spotifyOpen: false };
 
     case "CLOSE_SHOP":
       return { ...state, shopOpen: false };
 
     case "OPEN_HISTORY":
-      return { ...state, historyOpen: true, settingsOpen: false, shopOpen: false };
+      return { ...state, historyOpen: true, settingsOpen: false, shopOpen: false, spotifyOpen: false };
 
     case "CLOSE_HISTORY":
       return { ...state, historyOpen: false };
+
+    case "OPEN_SPOTIFY":
+      return { ...state, spotifyOpen: true, settingsOpen: false, shopOpen: false, historyOpen: false };
+
+    case "CLOSE_SPOTIFY":
+      return { ...state, spotifyOpen: false };
 
     case "SET_MODE": {
       if (state.timer.mode === action.mode) {

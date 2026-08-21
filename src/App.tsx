@@ -8,12 +8,14 @@ import { ActiveTaskBanner } from "@/features/tasks/ActiveTaskBanner";
 import { TaskPanel } from "@/features/tasks/TaskPanel";
 import { StatsPanel } from "@/features/stats/StatsPanel";
 import { HistoryModal } from "@/features/history/HistoryModal";
+import { Spotify } from "@/features/spotify/Spotify";
 import { usePomodoro } from "@/store/PomodoroContext";
 import { formatClock } from "@/lib/timerAudio";
 import styles from "./App.module.css";
 
 export function App() {
-  const { state, displayedRemainingMs, openSettings, openShop, openHistory } = usePomodoro();
+  const { state, displayedRemainingMs, openSettings, openShop, openHistory, openSpotify } =
+    usePomodoro();
 
   useEffect(() => {
     document.title = `${formatClock(displayedRemainingMs)} · pomodoro`;
@@ -62,6 +64,15 @@ export function App() {
         <button
           type="button"
           className={styles.iconButton}
+          onClick={openSpotify}
+          aria-label="Open Spotify"
+          aria-expanded={state.spotifyOpen}
+        >
+          <SpotifyIcon />
+        </button>
+        <button
+          type="button"
+          className={styles.iconButton}
           onClick={openSettings}
           aria-label="Open settings"
           aria-expanded={state.settingsOpen}
@@ -72,6 +83,7 @@ export function App() {
 
       <SettingsModal />
       <Shop />
+      <Spotify />
       <HistoryModal />
     </div>
   );
@@ -95,6 +107,20 @@ function ShopIcon() {
         strokeWidth="2"
       />
       <path d="M9 8.5V7a4 4 0 0 1 8 0v1.5" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  );
+}
+
+function SpotifyIcon() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+      <circle cx="13" cy="13" r="11" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M7.4 11.2c4.2-1.2 8.8-.7 11.8 1.3M7.8 14.4c3.4-1 7.2-.6 9.7 1.1M8.4 17.5c2.6-.8 5.5-.5 7.5.8"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

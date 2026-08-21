@@ -88,5 +88,6 @@ export function createInitialState(settings: AppSettings = DEFAULT_SETTINGS): Ap
     settingsOpen: false,
     shopOpen: false,
     historyOpen: false,
+    spotifyOpen: false,
   };
 }

@@ -121,4 +121,5 @@ export interface AppState {
   settingsOpen: boolean;
   shopOpen: boolean;
   historyOpen: boolean;
+  spotifyOpen: boolean;
 }

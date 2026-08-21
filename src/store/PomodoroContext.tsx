@@ -36,6 +36,8 @@ interface PomodoroContextValue {
   closeShop: () => void;
   openHistory: () => void;
   closeHistory: () => void;
+  openSpotify: () => void;
+  closeSpotify: () => void;
   unlockTheme: (itemId: string) => void;
   equipTheme: (itemId: string) => void;
   selectTheme: (itemId: string) => void;
@@ -150,6 +152,14 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "CLOSE_HISTORY" });
   }, []);
 
+  const openSpotify = useCallback(() => {
+    dispatch({ type: "OPEN_SPOTIFY" });
+  }, []);
+
+  const closeSpotify = useCallback(() => {
+    dispatch({ type: "CLOSE_SPOTIFY" });
+  }, []);
+
   const unlockTheme = useCallback((itemId: string) => {
     dispatch({ type: "UNLOCK_THEME", itemId });
   }, []);
@@ -216,6 +226,8 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
       closeShop,
       openHistory,
       closeHistory,
+      openSpotify,
+      closeSpotify,
       unlockTheme,
       equipTheme,
       selectTheme,
@@ -243,6 +255,8 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
       closeShop,
       openHistory,
       closeHistory,
+      openSpotify,
+      closeSpotify,
       unlockTheme,
       equipTheme,
       selectTheme,
