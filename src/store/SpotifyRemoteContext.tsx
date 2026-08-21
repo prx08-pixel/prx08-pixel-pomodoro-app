@@ -8,17 +8,19 @@ import {
   type ReactNode,
   type RefCallback,
 } from "react";
-import { FOCUS_PLAYLISTS, playlistAt, type FocusPlaylist } from "@/domain/playlists";
+import { FOCUS_THEMES, trackAt, themeAt, type FocusTheme, type FocusTrack } from "@/domain/playlists";
 
 const SPOTIFY_ORIGIN = "https://open.spotify.com";
 
 interface SpotifyRemoteValue {
-  playlist: FocusPlaylist;
-  playlistIndex: number;
+  theme: FocusTheme;
+  track: FocusTrack;
+  themeIndex: number;
+  trackIndex: number;
   playing: boolean;
   bindIframe: RefCallback<HTMLIFrameElement>;
-  selectPlaylist: (id: string) => void;
-  skipPlaylist: (direction: -1 | 1) => void;
+  selectTheme: (id: string) => void;
+  skipTrack: (direction: -1 | 1) => void;
   togglePlay: () => void;
 }
 
@@ -33,9 +35,13 @@ function postSpotifyCommand(frame: HTMLIFrameElement | null, command: string): v
 
 export function SpotifyRemoteProvider({ children }: { children: ReactNode }) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
-  const [playlistIndex, setPlaylistIndex] = useState(0);
+  const [themeIndex, setThemeIndex] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const pendingPlay = useRef(false);
+
+  const theme = themeAt(themeIndex);
+  const track = trackAt(theme, trackIndex);
 
   const bindIframe = useCallback<RefCallback<HTMLIFrameElement>>((node) => {
     iframeRef.current = node;
@@ -48,18 +54,22 @@ export function SpotifyRemoteProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const selectPlaylist = useCallback((id: string) => {
-    const next = FOCUS_PLAYLISTS.findIndex((item) => item.id === id);
-    if (next < 0 || next === playlistIndex) return;
+  const selectTheme = useCallback((id: string) => {
+    const next = FOCUS_THEMES.findIndex((item) => item.id === id);
+    if (next < 0) return;
     pendingPlay.current = playing;
-    setPlaylistIndex(next);
-  }, [playing, playlistIndex]);
+    setThemeIndex(next);
+    setTrackIndex(0);
+  }, [playing]);
 
-  const skipPlaylist = useCallback((direction: -1 | 1) => {
+  const skipTrack = useCallback((direction: -1 | 1) => {
     pendingPlay.current = true;
     setPlaying(true);
-    setPlaylistIndex((current) => (current + direction + FOCUS_PLAYLISTS.length) % FOCUS_PLAYLISTS.length);
-  }, []);
+    setTrackIndex((current) => {
+      const length = themeAt(themeIndex).tracks.length;
+      return (current + direction + length) % length;
+    });
+  }, [themeIndex]);
 
   const togglePlay = useCallback(() => {
     postSpotifyCommand(iframeRef.current, "toggle");
@@ -68,15 +78,17 @@ export function SpotifyRemoteProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({
-      playlist: playlistAt(playlistIndex),
-      playlistIndex,
+      theme,
+      track,
+      themeIndex,
+      trackIndex,
       playing,
       bindIframe,
-      selectPlaylist,
-      skipPlaylist,
+      selectTheme,
+      skipTrack,
       togglePlay,
     }),
-    [playlistIndex, playing, bindIframe, selectPlaylist, skipPlaylist, togglePlay],
+    [theme, track, themeIndex, trackIndex, playing, bindIframe, selectTheme, skipTrack, togglePlay],
   );
 
   return <SpotifyRemoteContext.Provider value={value}>{children}</SpotifyRemoteContext.Provider>;

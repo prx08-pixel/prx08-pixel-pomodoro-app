@@ -5,7 +5,7 @@ import styles from "./MusicPlayer.module.css";
 const BARS = [18, 42, 28, 64, 36, 78, 22, 58, 44, 70, 30, 86, 24, 52, 40, 66];
 
 export function MusicPlayer() {
-  const { playlist, playing, skipPlaylist, togglePlay } = useSpotifyRemote();
+  const { theme, track, playing, skipTrack, togglePlay } = useSpotifyRemote();
   const seekId = useId();
   const [liked, setLiked] = useState(false);
   const [repeat, setRepeat] = useState(true);
@@ -26,12 +26,15 @@ export function MusicPlayer() {
       </div>
 
       <div className={styles.meta}>
-        <p>{playlist.title}</p>
+        <div className={styles.copy}>
+          <p>{track.title}</p>
+          <span>{track.artist}</span>
+        </div>
         <button
           type="button"
           className={`${styles.heart} ${liked ? styles.loved : ""}`}
           aria-pressed={liked}
-          aria-label={liked ? "Unlike playlist" : "Like playlist"}
+          aria-label={liked ? "Unlike track" : "Like track"}
           onClick={() => setLiked((value) => !value)}
         >
           ♥
@@ -53,7 +56,7 @@ export function MusicPlayer() {
       </div>
 
       <div className={styles.controls}>
-        <button type="button" aria-label="Previous playlist" onClick={() => skipPlaylist(-1)}>
+        <button type="button" aria-label="Previous track" onClick={() => skipTrack(-1)}>
           <SkipIcon flip />
         </button>
         <button
@@ -64,7 +67,7 @@ export function MusicPlayer() {
         >
           {playing ? <PauseIcon /> : <PlayIcon />}
         </button>
-        <button type="button" aria-label="Next playlist" onClick={() => skipPlaylist(1)}>
+        <button type="button" aria-label="Next track" onClick={() => skipTrack(1)}>
           <SkipIcon />
         </button>
       </div>
@@ -79,7 +82,7 @@ export function MusicPlayer() {
         >
           ↺
         </button>
-        <span className={styles.hint}>Remote</span>
+        <span className={styles.hint}>{theme.title}</span>
       </div>
     </section>
   );

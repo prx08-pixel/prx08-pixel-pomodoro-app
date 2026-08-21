@@ -1,12 +1,12 @@
 import { useEffect, useId } from "react";
-import { FOCUS_PLAYLISTS } from "@/domain/playlists";
+import { FOCUS_THEMES } from "@/domain/playlists";
 import { usePomodoro } from "@/store/PomodoroContext";
 import { useSpotifyRemote } from "@/store/SpotifyRemoteContext";
 import styles from "./Spotify.module.css";
 
 export function Spotify() {
   const { state, closeSpotify } = usePomodoro();
-  const { playlist, bindIframe, selectPlaylist } = useSpotifyRemote();
+  const { theme, track, bindIframe, selectTheme } = useSpotifyRemote();
   const titleId = useId();
   const { spotifyOpen, settingsOpen, historyOpen } = state;
 
@@ -50,9 +50,9 @@ export function Spotify() {
         <div className={styles.player}>
           <iframe
             ref={bindIframe}
-            key={playlist.embedSrc}
-            title={`${playlist.title} on Spotify`}
-            src={playlist.embedSrc}
+            key={track.embedSrc}
+            title={`${track.title} by ${track.artist} on Spotify`}
+            src={track.embedSrc}
             width="100%"
             height="152"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -64,14 +64,14 @@ export function Spotify() {
         <section className={styles.waves} aria-labelledby={`${titleId}-waves`}>
           <h3 id={`${titleId}-waves`}>Curated Focus Waves</h3>
           <div className={styles.grid}>
-            {FOCUS_PLAYLISTS.map((item) => {
-              const selected = item.id === playlist.id;
+            {FOCUS_THEMES.map((item) => {
+              const selected = item.id === theme.id;
               return (
                 <button
                   key={item.id}
                   type="button"
                   className={`${styles.card} ${item.featured ? styles.featured : ""} ${selected ? styles.selected : ""}`}
-                  onClick={() => selectPlaylist(item.id)}
+                  onClick={() => selectTheme(item.id)}
                   aria-pressed={selected}
                 >
                   {item.featured ? <span className={styles.badge}>Featured</span> : null}
