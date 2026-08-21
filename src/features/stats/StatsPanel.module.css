@@ -243,6 +243,78 @@
 
 @media (min-width: 1100px) {
   .panel {
+    height: auto;
+    flex: 0 0 auto;
     max-height: none;
+    padding: 12px 12px 10px;
+    overflow: hidden;
+  }
+
+  .header h2 {
+    font-size: 16px;
+  }
+
+  .header p {
+    margin-top: 2px;
+    font-size: 11px;
+  }
+
+  .levelCard {
+    margin-top: 8px;
+    gap: 8px;
+  }
+
+  .badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 16px;
+  }
+
+  .levelCopy em {
+    font-size: 12px;
+  }
+
+  .levelCopy strong {
+    font-size: 13px;
+  }
+
+  .bar {
+    margin-top: 8px;
+    height: 7px;
+  }
+
+  .metrics {
+    margin-top: 8px;
+    grid-template-columns: 1fr 1fr 1fr;
+    flex: none;
+    overflow: visible;
+    gap: 6px;
+  }
+
+  .wide {
+    grid-column: auto;
+  }
+
+  .metrics article {
+    padding: 8px 8px;
+  }
+
+  .metrics strong {
+    font-size: 16px;
+    margin-top: 4px;
+  }
+
+  .metrics span {
+    display: none;
+  }
+
+  .actions {
+    margin-top: 8px;
+  }
+
+  .actions button {
+    height: 32px;
+    font-size: 11px;
   }
 }

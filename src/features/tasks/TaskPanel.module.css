@@ -224,6 +224,7 @@
 
 @media (min-width: 1100px) {
   .panel {
-    max-height: none;
+    height: auto;
+    max-height: 100%;
   }
 }

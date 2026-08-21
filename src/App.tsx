@@ -7,6 +7,7 @@ import { Shop } from "@/features/shop/Shop";
 import { ActiveTaskBanner } from "@/features/tasks/ActiveTaskBanner";
 import { TaskPanel } from "@/features/tasks/TaskPanel";
 import { StatsPanel } from "@/features/stats/StatsPanel";
+import { MusicPlayer } from "@/features/player/MusicPlayer";
 import { HistoryModal } from "@/features/history/HistoryModal";
 import { Spotify } from "@/features/spotify/Spotify";
 import { usePomodoro } from "@/store/PomodoroContext";
@@ -41,6 +42,7 @@ export function App() {
         </div>
         <div className={styles.stats} {...(hideSideCards ? { inert: true, "aria-hidden": true } : {})}>
           <StatsPanel />
+          <MusicPlayer />
         </div>
       </div>
 
