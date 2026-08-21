@@ -90,16 +90,53 @@
 
 @media (min-width: 768px) {
   .shell {
-    padding-top: 36px;
-    gap: 24px;
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    justify-content: space-between;
+    padding-top: max(12px, env(safe-area-inset-top));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+    gap: 10px;
+  }
+
+  .header {
+    margin-top: 0;
   }
 
   .header h1 {
-    font-size: 32px;
+    font-size: 22px;
+  }
+
+  .dashboard {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  .tasks,
+  .stats {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1 1 0;
+    overflow: hidden;
   }
 
   .timerCol {
-    gap: 22px;
+    flex: 0 1 auto;
+    min-height: 0;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .dock {
+    margin-top: 0;
+  }
+
+  .iconButton {
+    padding: 8px;
   }
 
   .sideFocus {
@@ -116,41 +153,51 @@
     min-width: 0;
     max-height: 0;
     overflow: hidden;
+    flex: 0;
   }
 }
 
 @media (min-width: 1100px) {
   .dashboard {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: stretch;
     max-width: 1280px;
-    gap: 28px;
+    gap: 20px;
   }
 
   .tasks,
   .timerCol,
   .stats {
     order: 0;
+    flex: unset;
   }
 
   .tasks {
     justify-self: end;
+    align-self: stretch;
     width: min(100%, 340px);
+    height: 100%;
+    max-height: 100%;
   }
 
   .timerCol {
     justify-self: center;
+    align-self: center;
   }
 
   .stats {
     justify-self: start;
+    align-self: stretch;
     width: min(100%, 340px);
+    height: 100%;
+    max-height: 100%;
   }
 
   .sideFocus .dashboard {
     grid-template-columns: 0fr auto 0fr;
     max-width: none;
+    align-items: center;
   }
 }
 

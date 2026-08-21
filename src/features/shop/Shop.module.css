@@ -328,7 +328,7 @@
     bottom: 0;
     width: var(--drawer-width);
     border-radius: 0;
-    padding: 36px 32px 28px;
+    padding: 24px 24px 18px;
     transform: translateX(100%);
     transition: transform 280ms ease, width 0.4s ease-in-out;
   }
@@ -360,8 +360,25 @@
     font-size: 16px;
   }
 
+  .balanceRow {
+    margin-top: 14px;
+    padding: 10px 16px;
+  }
+
+  .hint {
+    margin-top: 8px;
+  }
+
+  .clear {
+    margin-top: 10px;
+  }
+
+  .grid {
+    margin-top: 14px;
+  }
+
   .header h2 {
-    font-size: 24px;
+    font-size: 22px;
   }
 }
 

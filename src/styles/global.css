@@ -23,6 +23,19 @@ body,
   min-height: 100%;
 }
 
+@media (min-width: 768px) {
+  html,
+  body,
+  #root,
+  [data-theme-root] {
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
+}
+
 body {
   margin: 0;
   background: var(--navy);
