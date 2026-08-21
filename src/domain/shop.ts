@@ -1,3 +1,4 @@
+import { profileFromXp } from "./progression";
 import type { EconomyState, ShopItem } from "./types";
 
 /** TEMP: 30s for testing. Restore to `45 * 60 * 1000` before shipping. */
@@ -51,6 +52,37 @@ export const SHOP_CATALOG: readonly ShopItem[] = [
       "https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=1600&q=80",
     price: 0,
     hidden: true,
+    unlockHint: "Chest reward at Level 10",
+  },
+  {
+    id: "cosmic-voyager",
+    name: "Cosmic Voyager",
+    category: "premium",
+    description: "A silent cruise past blue marble and starfield.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1600&q=80",
+    price: 10,
+    requiredLevel: 5,
+  },
+  {
+    id: "deep-forest-zen",
+    name: "Deep Forest Zen",
+    category: "premium",
+    description: "Sunlit canopy and quiet moss underfoot.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80",
+    price: 15,
+    requiredLevel: 10,
+  },
+  {
+    id: "golden-cyberpunk-grid",
+    name: "Golden Cyberpunk Grid",
+    category: "premium",
+    description: "Neon gold streets in a night-city grid.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80",
+    price: 25,
+    requiredLevel: 15,
   },
 ];
 
@@ -70,6 +102,27 @@ export const EMPTY_ECONOMY: EconomyState = {
 
 export function getShopItem(id: string): ShopItem | undefined {
   return SHOP_CATALOG.find((item) => item.id === id);
+}
+
+export function playerLevelFromXp(totalXp: number): number {
+  return profileFromXp(totalXp).level;
+}
+
+export function meetsItemLevel(item: ShopItem, level: number): boolean {
+  return level >= (item.requiredLevel ?? 1);
+}
+
+export function canBuyShopItem(
+  item: ShopItem,
+  level: number,
+  starCoins: number,
+  unlockedItemIds: readonly string[],
+): boolean {
+  if (unlockedItemIds.includes(item.id)) return false;
+  if (item.hidden) return false;
+  if (!meetsItemLevel(item, level)) return false;
+  if (starCoins < item.price) return false;
+  return true;
 }
 
 export function resolveWallpaperUrl(economy: {

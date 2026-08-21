@@ -131,8 +131,16 @@
   border-color: var(--accent);
 }
 
-.locked {
-  opacity: 0.78;
+.gated .thumb {
+  filter: grayscale(40%);
+  opacity: 0.72;
+}
+
+.card:hover .thumb,
+.card:focus-within .thumb,
+.revealed .thumb {
+  filter: none;
+  opacity: 1;
 }
 
 .preview {
@@ -147,22 +155,74 @@
   font: inherit;
 }
 
-.preview:disabled {
-  cursor: not-allowed;
+.previewArt {
+  position: relative;
+  display: block;
+  height: 112px;
+  overflow: hidden;
 }
 
 .thumb {
-  height: 112px;
+  display: block;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  position: relative;
+  transition: filter 220ms ease, opacity 220ms ease;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 14px;
+  background: rgba(20, 24, 38, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 220ms ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.card:hover .overlay,
+.card:focus-within .overlay,
+.revealed .overlay {
+  opacity: 1;
+}
+
+.overlayText {
+  color: #eff1fa;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.lockMark {
   display: block;
+  margin-bottom: 6px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tapHint {
+  display: none;
+  margin: 0;
+  padding: 0 14px 8px;
+  font-size: 11px;
+  color: var(--muted);
 }
 
 .badge {
   position: absolute;
   left: 10px;
   top: 10px;
+  z-index: 3;
   background: rgb(22 25 50 / 0.78);
   color: #fff;
   font-size: 10px;
@@ -220,6 +280,12 @@
   background: var(--accent);
   color: #161932;
   cursor: default;
+}
+
+@media (hover: none) {
+  .tapHint {
+    display: block;
+  }
 }
 
 @media (max-width: 767px) {

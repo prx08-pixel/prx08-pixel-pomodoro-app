@@ -6,7 +6,7 @@ export type AccentColor = "coral" | "cyan" | "purple";
 
 export type AppFont = "kumbh" | "slab" | "mono";
 
-export type ShopCategory = "nature" | "space" | "relaxing";
+export type ShopCategory = "nature" | "space" | "relaxing" | "premium";
 
 export type WallpaperKind = "none" | "shop" | "custom";
 
@@ -67,6 +67,10 @@ export interface ShopItem {
   imageUrl: string;
   price: number;
   hidden?: boolean;
+  /** If set, the player must be at least this level to buy the item. */
+  requiredLevel?: number;
+  /** Shown on locked milestone-only items. */
+  unlockHint?: string;
 }
 
 export interface ActiveWallpaper {

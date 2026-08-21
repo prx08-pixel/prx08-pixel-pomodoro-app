@@ -1,7 +1,7 @@
 import { clampMinutes, minutesToMs, POMODOROS_PER_LONG_BREAK } from "./defaults";
 import { applyMilestones } from "./milestones";
 import { awardFocusProgress } from "./progression";
-import { getShopItem, mintCoinsFromFocus } from "./shop";
+import { canBuyShopItem, getShopItem, mintCoinsFromFocus, playerLevelFromXp } from "./shop";
 import { addTask, completeTask, logPomodoroOnActiveTask } from "./tasks";
 import type {
   AppSettings,
@@ -239,7 +239,16 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       }
 
       if (action.type === "EQUIP_THEME") return state;
-      if (state.economy.starCoins < item.price) return state;
+      if (
+        !canBuyShopItem(
+          item,
+          playerLevelFromXp(state.progression.totalXp),
+          state.economy.starCoins,
+          state.economy.unlockedItemIds,
+        )
+      ) {
+        return state;
+      }
 
       return {
         ...state,

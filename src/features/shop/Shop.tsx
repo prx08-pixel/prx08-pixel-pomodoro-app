@@ -1,5 +1,5 @@
-import { useEffect, useId } from "react";
-import { SHOP_CATALOG } from "@/domain/shop";
+import { useEffect, useId, useState } from "react";
+import { playerLevelFromXp, SHOP_CATALOG } from "@/domain/shop";
 import type { ShopCategory, ShopItem } from "@/domain/types";
 import { usePomodoro } from "@/store/PomodoroContext";
 import styles from "./Shop.module.css";
@@ -8,12 +8,14 @@ const CATEGORY_LABEL: Record<ShopCategory, string> = {
   nature: "Nature",
   space: "Space",
   relaxing: "Relaxing",
+  premium: "Premium",
 };
 
 export function Shop() {
   const { state, closeShop, selectTheme, clearWallpaper } = usePomodoro();
   const titleId = useId();
-  const { economy, shopOpen } = state;
+  const { economy, shopOpen, progression } = state;
+  const playerLevel = playerLevelFromXp(progression.totalXp);
 
   useEffect(() => {
     if (!shopOpen) return;
@@ -57,7 +59,10 @@ export function Shop() {
           </strong>
         </div>
 
-        <p className={styles.hint}>Earn 1 Star Coin for every 45 minutes of completed focus time.</p>
+        <p className={styles.hint}>
+          Earn 1 Star Coin for every 45 minutes of completed focus time. Hover or tap a card to see
+          unlock requirements.
+        </p>
 
         <button
           type="button"
@@ -69,12 +74,12 @@ export function Shop() {
         </button>
 
         <div className={styles.grid}>
-          {SHOP_CATALOG.filter(
-            (item) => !item.hidden || economy.unlockedItemIds.includes(item.id),
-          ).map((item) => (
+          {SHOP_CATALOG.map((item) => (
             <ShopCard
               key={item.id}
               item={item}
+              playerLevel={playerLevel}
+              shopOpen={shopOpen}
               unlocked={economy.unlockedItemIds.includes(item.id)}
               equipped={
                 economy.activeWallpaper.kind === "shop" &&
@@ -90,39 +95,86 @@ export function Shop() {
   );
 }
 
+function overlayCopy(item: ShopItem, unlocked: boolean, equipped: boolean, locked: boolean): string {
+  if (equipped) return "Equipped";
+  if (unlocked) return "Click to Apply";
+  if (item.hidden) return item.unlockHint ?? "Unlocks from a milestone chest";
+  if (locked) {
+    const levelBit = item.requiredLevel ? `Unlocks at Level ${item.requiredLevel}` : null;
+    return [levelBit, `${item.price} Star Coins`].filter(Boolean).join("  |  ");
+  }
+  return "Click to Unlock";
+}
+
 function ShopCard({
   item,
+  playerLevel,
+  shopOpen,
   unlocked,
   equipped,
   canAfford,
   onSelect,
 }: {
   item: ShopItem;
+  playerLevel: number;
+  shopOpen: boolean;
   unlocked: boolean;
   equipped: boolean;
   canAfford: boolean;
   onSelect: () => void;
 }) {
-  const lockedOut = !unlocked && !canAfford;
+  const [revealed, setRevealed] = useState(false);
+  const requiredLevel = item.requiredLevel ?? 1;
+  const levelLocked = !unlocked && playerLevel < requiredLevel;
+  const milestoneLocked = !unlocked && Boolean(item.hidden);
+  const coinLocked = !unlocked && !item.hidden && !canAfford;
+  const gated = !unlocked && (levelLocked || milestoneLocked);
+  const purchaseDisabled = gated || coinLocked || milestoneLocked;
+  const locked = purchaseDisabled;
+  const message = overlayCopy(item, unlocked, equipped, locked);
+
+  useEffect(() => {
+    if (!shopOpen) setRevealed(false);
+  }, [shopOpen]);
 
   return (
-    <article className={`${styles.card} ${equipped ? styles.equipped : ""} ${lockedOut ? styles.locked : ""}`}>
-      <button type="button" className={styles.preview} onClick={onSelect} disabled={lockedOut}>
-        <span className={styles.thumb} style={{ backgroundImage: `url(${item.imageUrl})` }}>
+    <article
+      className={`${styles.card} ${equipped ? styles.equipped : ""} ${gated ? styles.gated : ""} ${revealed ? styles.revealed : ""}`}
+    >
+      <button
+        type="button"
+        className={styles.preview}
+        onClick={() => {
+          if (locked) {
+            setRevealed((open) => !open);
+            return;
+          }
+          onSelect();
+        }}
+      >
+        <span className={styles.previewArt}>
+          <span className={styles.thumb} style={{ backgroundImage: `url(${item.imageUrl})` }} />
           <span className={styles.badge}>{CATEGORY_LABEL[item.category]}</span>
+          <span className={styles.overlay}>
+            <span className={styles.overlayText}>
+              {locked ? <span className={styles.lockMark}>Locked</span> : null}
+              {message}
+            </span>
+          </span>
         </span>
         <span className={styles.meta}>
           <span className={styles.name}>{item.name}</span>
           <span className={styles.copy}>{item.description}</span>
         </span>
       </button>
+      <p className={styles.tapHint}>{locked ? "Tap to view requirements" : "Tap the preview to use"}</p>
       {unlocked ? (
         <button type="button" className={styles.use} onClick={onSelect} disabled={equipped}>
           {equipped ? "Equipped" : "Use theme"}
         </button>
       ) : (
-        <button type="button" className={styles.buy} onClick={onSelect} disabled={!canAfford}>
-          Unlock · ★ {item.price}
+        <button type="button" className={styles.buy} onClick={onSelect} disabled={purchaseDisabled}>
+          {item.hidden ? "Chest reward" : `Unlock · ★ ${item.price}`}
         </button>
       )}
     </article>
