@@ -19,16 +19,8 @@ export function App() {
     usePomodoro();
   const isolateClock = state.shopOpen || state.spotifyOpen;
   const { showTasks, showProfile, showPlayer } = state.settings.layout;
-  const showTasksCol = showTasks && !isolateClock;
-  const showStatsCol = (showProfile || showPlayer) && !isolateClock;
-  const layoutMode =
-    isolateClock || (!showTasks && !showProfile && !showPlayer)
-      ? "focus"
-      : showTasksCol && showStatsCol
-        ? "split"
-        : showTasksCol
-          ? "left"
-          : "right";
+  const hideTasks = !showTasks || isolateClock;
+  const hideStats = (!showProfile && !showPlayer) || isolateClock;
 
   useEffect(() => {
     document.title = `${formatClock(displayedRemainingMs)} · pomodoro`;
@@ -40,24 +32,26 @@ export function App() {
         <h1>pomodoro</h1>
       </header>
 
-      <div className={styles.dashboard} data-layout={layoutMode}>
-        {showTasks ? (
-          <div className={styles.tasks} {...(isolateClock ? { inert: true, "aria-hidden": true } : {})}>
-            <TaskPanel />
-          </div>
-        ) : null}
+      <div className={styles.dashboard}>
+        <div
+          className={`${styles.tasks} ${hideTasks ? styles.slotHidden : ""}`}
+          {...(hideTasks ? { inert: true, "aria-hidden": true } : {})}
+        >
+          {showTasks ? <TaskPanel /> : null}
+        </div>
         <div className={styles.timerCol}>
           <ModeSwitcher />
           <CoinBalance />
-          {showTasks ? <ActiveTaskBanner /> : null}
+          <ActiveTaskBanner />
           <TimerCircle />
         </div>
-        {showProfile || showPlayer ? (
-          <div className={styles.stats} {...(isolateClock ? { inert: true, "aria-hidden": true } : {})}>
-            {showProfile ? <StatsPanel /> : null}
-            {showPlayer ? <MusicPlayer /> : null}
-          </div>
-        ) : null}
+        <div
+          className={`${styles.stats} ${hideStats ? styles.slotHidden : ""}`}
+          {...(hideStats ? { inert: true, "aria-hidden": true } : {})}
+        >
+          {showProfile ? <StatsPanel /> : null}
+          {showPlayer ? <MusicPlayer /> : null}
+        </div>
       </div>
 
       <div className={styles.dock}>
