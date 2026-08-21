@@ -1,0 +1,24 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid rgb(215 224 255 / 0.35);
+  background: transparent;
+}
+
+.filled {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.more {
+  font-size: 10px;
+  color: rgb(215 224 255 / 0.55);
+}

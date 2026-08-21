@@ -1,0 +1,98 @@
+.outer {
+  --timer-size: min(87vw, 300px);
+  width: var(--timer-size);
+  height: var(--timer-size);
+  border-radius: 50%;
+  background: linear-gradient(315deg, #2e325a 0%, #0e112a 100%);
+  box-shadow:
+    -40px -40px 80px #272c5a,
+    40px 40px 80px #121530;
+  display: grid;
+  place-items: center;
+}
+
+.inner {
+  width: 89.5%;
+  height: 89.5%;
+  border-radius: 50%;
+  background: var(--navy-deep);
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.ring {
+  position: absolute;
+  inset: 4.2%;
+  width: 91.6%;
+  height: 91.6%;
+  transform: rotate(-90deg);
+}
+
+.track,
+.progress {
+  fill: none;
+  stroke-width: 3.2;
+}
+
+.track {
+  stroke: transparent;
+}
+
+.progress {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 200ms linear;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2vw, 18px);
+}
+
+.time {
+  margin: 0;
+  color: var(--lavender);
+  font-size: clamp(68px, 21vw, 80px);
+  font-weight: 700;
+  letter-spacing: -4px;
+  line-height: 1;
+}
+
+.action {
+  border: 0;
+  background: transparent;
+  color: var(--lavender);
+  font: 700 14px/1 var(--font-app);
+  letter-spacing: 13.13px;
+  padding: 8px 0 8px 13px;
+  cursor: pointer;
+}
+
+.action:hover {
+  color: var(--accent);
+}
+
+@media (min-width: 768px) {
+  .outer {
+    --timer-size: 410px;
+    box-shadow:
+      -50px -50px 100px #272c5a,
+      50px 50px 100px #121530;
+  }
+
+  .time {
+    font-size: 100px;
+    letter-spacing: -5px;
+  }
+
+  .action {
+    font-size: 16px;
+    letter-spacing: 15px;
+    padding-left: 15px;
+  }
+}

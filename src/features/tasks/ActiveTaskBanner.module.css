@@ -1,0 +1,33 @@
+.idle,
+.active {
+  margin: 0;
+  text-align: center;
+  max-width: min(92vw, 410px);
+}
+
+.idle {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.active {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.active span {
+  font-size: 11px;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.active strong {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.2;
+}

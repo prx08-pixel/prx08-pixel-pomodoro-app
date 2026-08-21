@@ -1,0 +1,44 @@
+.track {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(92vw, 373px);
+  padding: 8px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+}
+
+.tab {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: 700 12px/1 var(--font-app);
+  letter-spacing: 0;
+  padding: 16px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.tab:hover {
+  color: #fff;
+}
+
+.active {
+  background: var(--accent);
+  color: var(--navy-deep);
+}
+
+.active:hover {
+  color: var(--navy-deep);
+}
+
+@media (min-width: 768px) {
+  .tab {
+    font-size: 14px;
+    padding: 16px 12px;
+  }
+}

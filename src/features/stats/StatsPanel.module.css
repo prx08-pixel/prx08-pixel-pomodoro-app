@@ -1,0 +1,208 @@
+.panel {
+  position: relative;
+  width: 100%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 20px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: min(52vh, 460px);
+  overflow: auto;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+.header p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.levelCard {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #141826;
+}
+
+.badge.novice {
+  background: linear-gradient(135deg, #c08a54, #8d5b2c);
+  box-shadow: 0 0 20px rgb(192 138 84 / 0.4);
+}
+
+.badge.adept {
+  background: linear-gradient(135deg, #70f3f8, #3dd6e0);
+  box-shadow: 0 0 20px rgb(112 243 248 / 0.45);
+}
+
+.badge.alchemist {
+  background: linear-gradient(135deg, #d881f8, #9b4de0);
+  box-shadow: 0 0 20px rgb(216 129 248 / 0.45);
+}
+
+.badge.master {
+  background: linear-gradient(135deg, #ffe08a, #ffd166 40%, #fff6d4);
+  box-shadow: 0 0 24px rgb(255 209 102 / 0.55);
+}
+
+.levelCopy p,
+.levelCopy em {
+  margin: 0;
+}
+
+.levelCopy p {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.levelCopy em {
+  display: block;
+  margin-top: 3px;
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.levelCopy strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.novice {
+  color: #e0b07a;
+}
+
+.adept {
+  color: #70f3f8;
+}
+
+.alchemist {
+  color: #d881f8;
+}
+
+.master {
+  color: #ffd166;
+}
+
+.bar {
+  margin-top: 12px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.08);
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 320ms ease;
+}
+
+.bar span.novice {
+  background: linear-gradient(90deg, #c08a54, #e0b07a);
+}
+
+.bar span.adept {
+  background: linear-gradient(90deg, #3dd6e0, #70f3f8);
+  box-shadow: 0 0 12px rgb(112 243 248 / 0.55);
+}
+
+.bar span.alchemist {
+  background: linear-gradient(90deg, #9b4de0, #d881f8);
+  box-shadow: 0 0 12px rgb(216 129 248 / 0.45);
+}
+
+.bar span.master {
+  background: linear-gradient(90deg, #ffd166, #fff1b8);
+  box-shadow: 0 0 14px rgb(255 209 102 / 0.55);
+}
+
+.metrics {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.metrics article {
+  background: rgb(255 255 255 / 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 12px 14px;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.metrics p {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.metrics strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 20px;
+  color: #fff;
+}
+
+.metrics span {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #d881f8;
+}
+
+.actions {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.actions button {
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: rgb(255 255 255 / 0.06);
+  color: #d7e0ff;
+  font: 700 12px var(--font-app);
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: rgb(255 255 255 / 0.12);
+}
+
+@media (min-width: 1100px) {
+  .panel {
+    max-height: min(70vh, 640px);
+  }
+}

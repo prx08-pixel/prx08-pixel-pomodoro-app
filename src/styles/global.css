@@ -1,0 +1,69 @@
+:root {
+  --navy: #1e213f;
+  --navy-deep: #161932;
+  --lavender: #d7e0ff;
+  --muted: #d7e0ff;
+  --accent: #f87070;
+  --font-app: "Kumbh Sans", sans-serif;
+  --glass-bg: rgba(20, 24, 38, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--navy);
+  color: var(--lavender);
+  font-family: var(--font-app);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+::placeholder {
+  color: #d7e0ff;
+  opacity: 0.75;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+[data-theme-root] {
+  min-height: 100svh;
+  min-height: 100dvh;
+  font-family: var(--font-app);
+  position: relative;
+  background-color: var(--navy);
+  background-image: var(--wallpaper, none);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+[data-theme-root][data-has-wallpaper="true"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(22 25 50 / 0.55) 0%, rgb(30 33 63 / 0.78) 100%);
+}

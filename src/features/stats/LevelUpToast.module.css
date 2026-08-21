@@ -1,0 +1,63 @@
+.toast {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  background: rgb(20 24 38 / 0.55);
+  border-radius: 24px;
+  animation: fade 2400ms ease forwards;
+  pointer-events: none;
+}
+
+.glow {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #70f3f8 0%, rgb(216 129 248 / 0.2) 55%, transparent 70%);
+  animation: pulse 2400ms ease;
+}
+
+.toast p {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #70f3f8;
+}
+
+.toast strong {
+  font-size: 42px;
+  line-height: 1;
+  background: linear-gradient(135deg, #70f3f8, #d881f8, #ffd166);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes fade {
+  0%,
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
