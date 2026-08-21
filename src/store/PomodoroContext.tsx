@@ -280,7 +280,7 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
       <div
         data-theme-root
         data-has-wallpaper={wallpaperUrl ? "true" : "false"}
-        className={state.shopOpen ? "shop-open" : undefined}
+        className={state.shopOpen || state.spotifyOpen ? "side-focus" : undefined}
         style={
           {
             "--accent": ACCENT_HEX[state.settings.appearance.color],

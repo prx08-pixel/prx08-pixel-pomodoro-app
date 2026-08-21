@@ -14,17 +14,19 @@ const CATEGORY_LABEL: Record<ShopCategory, string> = {
 export function Shop() {
   const { state, closeShop, selectTheme, clearWallpaper } = usePomodoro();
   const titleId = useId();
-  const { economy, shopOpen, progression } = state;
+  const { economy, shopOpen, progression, settingsOpen, historyOpen } = state;
   const playerLevel = playerLevelFromXp(progression.totalXp);
 
   useEffect(() => {
     if (!shopOpen) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeShop();
+      if (event.key !== "Escape") return;
+      if (settingsOpen || historyOpen) return;
+      closeShop();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [shopOpen, closeShop]);
+  }, [shopOpen, closeShop, settingsOpen, historyOpen]);
 
   return (
     <div className={`${styles.root} ${shopOpen ? styles.open : ""}`}>

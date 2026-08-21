@@ -11,6 +11,7 @@
     20px
     max(24px, env(safe-area-inset-bottom));
   gap: 20px;
+  transition: padding-right 0.4s ease-in-out;
 }
 
 .header {
@@ -33,6 +34,16 @@
   align-items: center;
   gap: 20px;
   min-height: 0;
+  transition: grid-template-columns 0.4s ease-in-out, gap 0.4s ease-in-out;
+}
+
+.tasks,
+.stats {
+  transition:
+    opacity 0.4s ease-in-out,
+    transform 0.4s ease-in-out,
+    visibility 0.4s ease-in-out,
+    width 0.4s ease-in-out;
 }
 
 .tasks {
@@ -90,6 +101,22 @@
   .timerCol {
     gap: 22px;
   }
+
+  .sideFocus {
+    padding-right: calc(min(400px, 38vw) + 16px);
+  }
+
+  .sideFocus .tasks,
+  .sideFocus .stats {
+    opacity: 0;
+    transform: scale(0.95);
+    visibility: hidden;
+    pointer-events: none;
+    width: 0;
+    min-width: 0;
+    max-height: 0;
+    overflow: hidden;
+  }
 }
 
 @media (min-width: 1100px) {
@@ -119,5 +146,19 @@
   .stats {
     justify-self: start;
     width: min(100%, 340px);
+  }
+
+  .sideFocus .dashboard {
+    grid-template-columns: 0fr auto 0fr;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell,
+  .dashboard,
+  .tasks,
+  .stats {
+    transition: none;
   }
 }

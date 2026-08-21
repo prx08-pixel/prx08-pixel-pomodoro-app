@@ -107,7 +107,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return action.state;
 
     case "OPEN_SETTINGS":
-      return { ...state, settingsOpen: true, shopOpen: false, historyOpen: false, spotifyOpen: false };
+      return { ...state, settingsOpen: true, historyOpen: false };
 
     case "CLOSE_SETTINGS":
       return { ...state, settingsOpen: false };
@@ -119,7 +119,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, shopOpen: false };
 
     case "OPEN_HISTORY":
-      return { ...state, historyOpen: true, settingsOpen: false, shopOpen: false, spotifyOpen: false };
+      return { ...state, historyOpen: true, settingsOpen: false };
 
     case "CLOSE_HISTORY":
       return { ...state, historyOpen: false };

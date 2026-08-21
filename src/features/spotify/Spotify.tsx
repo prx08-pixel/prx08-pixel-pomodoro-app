@@ -8,7 +8,7 @@ const DEFAULT_PLAYLIST: FocusPlaylist = FOCUS_PLAYLISTS[0] as FocusPlaylist;
 export function Spotify() {
   const { state, closeSpotify } = usePomodoro();
   const titleId = useId();
-  const { spotifyOpen } = state;
+  const { spotifyOpen, settingsOpen, historyOpen } = state;
   const [activeId, setActiveId] = useState(DEFAULT_PLAYLIST.id);
 
   const active = FOCUS_PLAYLISTS.find((item) => item.id === activeId) ?? DEFAULT_PLAYLIST;
@@ -16,11 +16,13 @@ export function Spotify() {
   useEffect(() => {
     if (!spotifyOpen) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeSpotify();
+      if (event.key !== "Escape") return;
+      if (settingsOpen || historyOpen) return;
+      closeSpotify();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [spotifyOpen, closeSpotify]);
+  }, [spotifyOpen, closeSpotify, settingsOpen, historyOpen]);
 
   return (
     <div className={`${styles.root} ${spotifyOpen ? styles.open : ""}`}>

@@ -16,19 +16,21 @@ import styles from "./App.module.css";
 export function App() {
   const { state, displayedRemainingMs, openSettings, openShop, openHistory, openSpotify } =
     usePomodoro();
+  const isolateClock = state.shopOpen || state.spotifyOpen;
+  const hideSideCards = isolateClock;
 
   useEffect(() => {
     document.title = `${formatClock(displayedRemainingMs)} · pomodoro`;
   }, [displayedRemainingMs]);
 
   return (
-    <div className={styles.shell}>
+    <div className={`${styles.shell} ${isolateClock ? styles.sideFocus : ""}`}>
       <header className={styles.header}>
         <h1>pomodoro</h1>
       </header>
 
       <div className={styles.dashboard}>
-        <div className={styles.tasks}>
+        <div className={styles.tasks} {...(hideSideCards ? { inert: true, "aria-hidden": true } : {})}>
           <TaskPanel />
         </div>
         <div className={styles.timerCol}>
@@ -37,7 +39,7 @@ export function App() {
           <ActiveTaskBanner />
           <TimerCircle />
         </div>
-        <div className={styles.stats}>
+        <div className={styles.stats} {...(hideSideCards ? { inert: true, "aria-hidden": true } : {})}>
           <StatsPanel />
         </div>
       </div>
