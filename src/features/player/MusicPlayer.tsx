@@ -1,55 +1,17 @@
-import { useEffect, useId, useState } from "react";
-import {
-  AMBIENT_TRACK_MS,
-  ambientPad,
-  ambientTrackName,
-} from "@/lib/ambientPad";
-import { formatClock } from "@/lib/timerAudio";
-import { usePomodoro } from "@/store/PomodoroContext";
+import { useId, useState } from "react";
+import { useSpotifyRemote } from "@/store/SpotifyRemoteContext";
 import styles from "./MusicPlayer.module.css";
 
 const BARS = [18, 42, 28, 64, 36, 78, 22, 58, 44, 70, 30, 86, 24, 52, 40, 66];
 
 export function MusicPlayer() {
-  const { openSpotify } = usePomodoro();
+  const { playlist, playing, skipPlaylist, togglePlay } = useSpotifyRemote();
   const seekId = useId();
-  const [playing, setPlaying] = useState(false);
   const [liked, setLiked] = useState(false);
   const [repeat, setRepeat] = useState(true);
-  const [track, setTrack] = useState(0);
-  const [elapsed, setElapsed] = useState(0);
-
-  useEffect(() => {
-    if (!playing) return;
-    let last = performance.now();
-    let frame = 0;
-    const tick = (now: number) => {
-      const delta = now - last;
-      last = now;
-      setElapsed((value) => (value + delta) % AMBIENT_TRACK_MS);
-      frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [playing]);
-
-  const togglePlay = async () => {
-    await ambientPad.toggle();
-    setPlaying(ambientPad.isPlaying);
-  };
-
-  const skip = async (direction: -1 | 1) => {
-    if (direction === 1) await ambientPad.next();
-    else await ambientPad.previous();
-    setTrack(ambientPad.trackIndex);
-    setElapsed(0);
-    setPlaying(ambientPad.isPlaying);
-  };
-
-  const progress = elapsed / AMBIENT_TRACK_MS;
 
   return (
-    <section className={styles.card} aria-label="Ambient music player">
+    <section className={styles.card} aria-label="Spotify remote">
       <div className={styles.screen}>
         <span className={styles.leds} aria-hidden="true">
           <i />
@@ -64,12 +26,12 @@ export function MusicPlayer() {
       </div>
 
       <div className={styles.meta}>
-        <p>{ambientTrackName(track)}</p>
+        <p>{playlist.title}</p>
         <button
           type="button"
           className={`${styles.heart} ${liked ? styles.loved : ""}`}
           aria-pressed={liked}
-          aria-label={liked ? "Unlike track" : "Like track"}
+          aria-label={liked ? "Unlike playlist" : "Like playlist"}
           onClick={() => setLiked((value) => !value)}
         >
           ♥
@@ -77,32 +39,32 @@ export function MusicPlayer() {
       </div>
 
       <div className={styles.seek}>
-        <span>{formatClock(elapsed)}</span>
+        <span>Spotify</span>
         <input
           id={seekId}
           type="range"
           min={0}
           max={100}
-          value={Math.round(progress * 100)}
-          aria-label="Track progress"
-          onChange={(event) => setElapsed((Number(event.target.value) / 100) * AMBIENT_TRACK_MS)}
+          value={playing ? 42 : 0}
+          disabled
+          aria-label="Spotify progress"
         />
-        <span>{formatClock(AMBIENT_TRACK_MS)}</span>
+        <span>Live</span>
       </div>
 
       <div className={styles.controls}>
-        <button type="button" aria-label="Previous track" onClick={() => void skip(-1)}>
+        <button type="button" aria-label="Previous playlist" onClick={() => skipPlaylist(-1)}>
           <SkipIcon flip />
         </button>
         <button
           type="button"
           className={styles.play}
-          aria-label={playing ? "Pause" : "Play"}
-          onClick={() => void togglePlay()}
+          aria-label={playing ? "Pause Spotify" : "Play Spotify"}
+          onClick={togglePlay}
         >
           {playing ? <PauseIcon /> : <PlayIcon />}
         </button>
-        <button type="button" aria-label="Next track" onClick={() => void skip(1)}>
+        <button type="button" aria-label="Next playlist" onClick={() => skipPlaylist(1)}>
           <SkipIcon />
         </button>
       </div>
@@ -117,9 +79,7 @@ export function MusicPlayer() {
         >
           ↺
         </button>
-        <button type="button" aria-label="Open Spotify" onClick={openSpotify}>
-          ⋯
-        </button>
+        <span className={styles.hint}>Remote</span>
       </div>
     </section>
   );

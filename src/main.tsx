@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { PomodoroProvider } from "./store/PomodoroContext";
+import { SpotifyRemoteProvider } from "./store/SpotifyRemoteContext";
 import "./styles/global.css";
 
 const root = document.getElementById("root");
@@ -13,7 +14,9 @@ if (!root) {
 createRoot(root).render(
   <StrictMode>
     <PomodoroProvider>
-      <App />
+      <SpotifyRemoteProvider>
+        <App />
+      </SpotifyRemoteProvider>
     </PomodoroProvider>
   </StrictMode>,
 );

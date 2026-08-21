@@ -13,11 +13,17 @@ function embedPlaylist(id: string): string {
 export const FOCUS_PLAYLISTS: readonly FocusPlaylist[] = [
   {
     id: "lofi-deep-work",
-    title: "Lofi Beats for Deep Work",
+    title: "Lofi Beats",
     description:
       "Chill tempos, calm instrumentation, and relaxing backgrounds designed for pure cognitive productivity.",
     embedSrc: embedPlaylist("37i9dQZF1DWWQRwui0ExPn"),
     featured: true,
+  },
+  {
+    id: "dark-synth",
+    title: "Dark Synth",
+    description: "Neon pulse and retro synthwave for late-night deep work.",
+    embedSrc: embedPlaylist("37i9dQZF1DX0KpeLFwA3tN"),
   },
   {
     id: "deep-ambient",
@@ -25,10 +31,9 @@ export const FOCUS_PLAYLISTS: readonly FocusPlaylist[] = [
     description: "Spacious pads and quiet drones for long, uninterrupted concentration.",
     embedSrc: embedPlaylist("37i9dQZF1DWZeKCadgRdKQ"),
   },
-  {
-    id: "productivity-electronic",
-    title: "Productivity Electronic",
-    description: "Steady study electronics to keep your workflow moving without distraction.",
-    embedSrc: embedPlaylist("37i9dQZF1DX8NTLI2TtZa6"),
-  },
 ];
+
+export function playlistAt(index: number): FocusPlaylist {
+  const playlist = FOCUS_PLAYLISTS[((index % FOCUS_PLAYLISTS.length) + FOCUS_PLAYLISTS.length) % FOCUS_PLAYLISTS.length];
+  return playlist ?? FOCUS_PLAYLISTS[0]!;
+}

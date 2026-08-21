@@ -178,6 +178,13 @@
   color: #39ff7a;
 }
 
+.hint {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .live span {
     animation: none;

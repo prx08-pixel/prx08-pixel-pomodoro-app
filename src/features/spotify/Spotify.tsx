@@ -1,17 +1,14 @@
-import { useEffect, useId, useState } from "react";
-import { FOCUS_PLAYLISTS, type FocusPlaylist } from "@/domain/playlists";
+import { useEffect, useId } from "react";
+import { FOCUS_PLAYLISTS } from "@/domain/playlists";
 import { usePomodoro } from "@/store/PomodoroContext";
+import { useSpotifyRemote } from "@/store/SpotifyRemoteContext";
 import styles from "./Spotify.module.css";
-
-const DEFAULT_PLAYLIST: FocusPlaylist = FOCUS_PLAYLISTS[0] as FocusPlaylist;
 
 export function Spotify() {
   const { state, closeSpotify } = usePomodoro();
+  const { playlist, bindIframe, selectPlaylist } = useSpotifyRemote();
   const titleId = useId();
   const { spotifyOpen, settingsOpen, historyOpen } = state;
-  const [activeId, setActiveId] = useState(DEFAULT_PLAYLIST.id);
-
-  const active = FOCUS_PLAYLISTS.find((item) => item.id === activeId) ?? DEFAULT_PLAYLIST;
 
   useEffect(() => {
     if (!spotifyOpen) return;
@@ -52,33 +49,34 @@ export function Spotify() {
 
         <div className={styles.player}>
           <iframe
-            key={active.embedSrc}
-            title={`${active.title} on Spotify`}
-            src={active.embedSrc}
+            ref={bindIframe}
+            key={playlist.embedSrc}
+            title={`${playlist.title} on Spotify`}
+            src={playlist.embedSrc}
             width="100%"
             height="152"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             allowFullScreen
           />
         </div>
-        <p className={styles.hint}>Log in, play, and set volume in the player without leaving your timer.</p>
+        <p className={styles.hint}>Control playback from the retro player on the dashboard. This drawer is optional.</p>
 
         <section className={styles.waves} aria-labelledby={`${titleId}-waves`}>
           <h3 id={`${titleId}-waves`}>Curated Focus Waves</h3>
           <div className={styles.grid}>
-            {FOCUS_PLAYLISTS.map((playlist) => {
-              const selected = playlist.id === active.id;
+            {FOCUS_PLAYLISTS.map((item) => {
+              const selected = item.id === playlist.id;
               return (
                 <button
-                  key={playlist.id}
+                  key={item.id}
                   type="button"
-                  className={`${styles.card} ${playlist.featured ? styles.featured : ""} ${selected ? styles.selected : ""}`}
-                  onClick={() => setActiveId(playlist.id)}
+                  className={`${styles.card} ${item.featured ? styles.featured : ""} ${selected ? styles.selected : ""}`}
+                  onClick={() => selectPlaylist(item.id)}
                   aria-pressed={selected}
                 >
-                  {playlist.featured ? <span className={styles.badge}>Featured</span> : null}
-                  <strong>{playlist.title}</strong>
-                  <span>{playlist.description}</span>
+                  {item.featured ? <span className={styles.badge}>Featured</span> : null}
+                  <strong>{item.title}</strong>
+                  <span>{item.description}</span>
                 </button>
               );
             })}
