@@ -103,7 +103,7 @@
   }
 
   .sideFocus {
-    padding-right: calc(min(400px, 38vw) + 16px);
+    padding-right: calc(var(--drawer-width) + 16px);
   }
 
   .sideFocus .tasks,
